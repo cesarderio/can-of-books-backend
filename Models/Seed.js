@@ -5,13 +5,14 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 mongoose.connect(process.env.DB_URL);
 
-const Book = require('./models/Book.js');
+const Book = require('./Models/Book.js');
 
 async function seed() {
   // **name: {type: String, required: true},
   // **color: {type: String, required: true},
   // **spayNeuter: {type: Boolean, required: true},
   // **location: {type: String, required: true}
+  console.log('Ray the cat was created');
 
   await Book.create({
     title: 'Pat the cat',
@@ -35,7 +36,6 @@ async function seed() {
     status: 'not available'
   });
 
-  console.log('Ray the cat was created');
 
   mongoose.disconnect();
 }
