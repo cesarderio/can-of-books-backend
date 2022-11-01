@@ -8,7 +8,7 @@ const Book = require('./Models/Book')
 
 const app = express();
 app.use(cors());
-// app.use(express.json());
+app.use(express.json());
 
 const PORT = process.env.PORT || 3002;
 
@@ -41,6 +41,17 @@ async function getBooks(request, response, next) {
 
 app.post('/books', postBooks);
 
+async function postBooks(request, response, next){
+  try {
+    console.log(request.body);
+    let createdBook = await Book.create(request.body);
+    response.status(200).send(createdBook);
+  } catch (error) {
+    next(error);
+    
+  }
+}
+
 app.delete('/books/:bookID', deleteBooks);
 
 async function deleteBooks(request, response, next){
@@ -57,16 +68,6 @@ async function deleteBooks(request, response, next){
 
 
 
-async function postBooks(request, response, next){
-  try {
-    console.log(request.body);
-    let createdBook = await Book.create(request.body);
-    response.status(200).send(createdBook);
-  } catch (error) {
-    next(error);
-    
-  }
-}
 
 app.get('/test', (request, response) => {
   response.send('test request received')
