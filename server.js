@@ -11,11 +11,11 @@ app.use(cors());
 
 const PORT = process.env.PORT || 3002;
 
-app.get('/', (request, response)=>{
+app.get('/', (request, response) => {
   response.status(200).send('Welcome to my server');
 });
 
-const Book = require('./Models/Book');
+const { request, response } = require('express');
 
 mongoose.connect(process.env.DB_URL);
 
@@ -26,15 +26,22 @@ db.once('open', function () {
 });
 
 
+app.get('/books', getBooks);
 
-
-
+async function getBooks(request, response, next) {
+  try {
+    let results = await Book.find({});
+    response.status(200).send(results);
+  } catch (error) {
+    next(error)
+  }
+}
 
 app.get('/test', (request, response) => {
   response.send('test request received')
 })
 
-app.use((error, request, response, next)=>{
+app.use((error, request, response, next) => {
   response.status(404).send('Not available');
 })
 
