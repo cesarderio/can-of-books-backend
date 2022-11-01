@@ -8,6 +8,7 @@ const Book = require('./Models/Book')
 
 const app = express();
 app.use(cors());
+// app.use(express.json());
 
 const PORT = process.env.PORT || 3002;
 
@@ -35,6 +36,35 @@ async function getBooks(request, response, next) {
     console.log(results);
   } catch (error) {
     next(error)
+  }
+}
+
+app.post('/books', postBooks);
+
+app.delete('/books/:bookID', deleteBooks);
+
+async function deleteBooks(request, response, next){
+  console.log(request.params);
+  console.log(request.params.bookID);
+  try {
+    let id = request.params.bookID;
+    await Book.findByIdAndDelete(id);
+    response.status(200).send('Book was deleted');
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+
+async function postBooks(request, response, next){
+  try {
+    console.log(request.body);
+    let createdBook = await Book.create(request.body);
+    response.status(200).send(createdBook);
+  } catch (error) {
+    next(error);
+    
   }
 }
 
