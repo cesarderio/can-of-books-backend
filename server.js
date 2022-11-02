@@ -26,7 +26,31 @@ db.once('open', function () {
   console.log('Mongoose is connected');
 });
 
+//---------- ENDPOINT - TO UPDATE A BOOK----------------
+//----------- ADDED 11/02/22-----------------
+app.put('/books:bookID', updateBook);
 
+async function updateBook(request, response, next){
+  try {
+    let id = request.params.bookID;
+    let data = request.body;
+
+//-- findByIdAndUpdate - 3 arguments
+// 1. id of the thing to update
+// 2. updated data
+// 3. option object - { new: true, overwrite: true }
+
+const updatedBook = await Book.findByIdAndUpdate(id, data, { new: true, overwrite: true});
+
+response.status(200).send(updatedBook);
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+//-----------------------------------------------------
 app.get('/books', getBooks);
 
 async function getBooks(request, response, next) {
