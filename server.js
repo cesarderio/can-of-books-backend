@@ -28,7 +28,7 @@ db.once('open', function () {
 
 //---------- ENDPOINT - TO UPDATE A BOOK----------------
 //----------- ADDED 11/02/22-----------------
-app.put('/books:bookID', updateBook);
+app.put('/books/:bookID', updateBook);
 
 async function updateBook(request, response, next){
   try {
